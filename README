@@ -6,6 +6,6 @@ Idea for this text editor came from Sublime Text Editor which is awesome.
 
 Update 1 (11/2/2016): Creating repo and pushing it to GIT. 
 Update 2 (11/2/2016): Added functionality to Open, Save, SaveAs and Quit. Also, merged to master.
-
+Update 3 (11/4/2016): Changed the basic framework from tkinter to wxframework.
 
 -Varun
