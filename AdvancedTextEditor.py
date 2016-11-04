@@ -13,6 +13,15 @@ faces = {
 	'size2' : 8,
 }
 
+keyCode = {
+	'KNew' : 14,			# Ctrl + N
+	'KOpen' : 15,			# Ctrl + O
+	'KSave' : 19,			# Ctrl + S
+	'KSaveAs' : 115, 		# Save As along with alt pressed.
+	'KClose' : 23,			# Ctrl + W
+}
+
+
 # Window of the text editor class.
 class MainWindow( wx.Frame ):
 
@@ -113,8 +122,12 @@ class MainWindow( wx.Frame ):
 
 		self.Bind( wx.EVT_MENU, self.OnAbout, menuAbout )
 
+		self.control.Bind( wx.EVT_KEY_UP, self.UpdateLineCol )
+		self.control.Bind( wx.EVT_CHAR, self.OnCharEvent )
+
 		# Make the window visible.
 		self.Show()
+		self.UpdateLineCol( self )
 
 	def OnNew( self, event ):
 		self.filename = "Untitled"
@@ -204,6 +217,28 @@ class MainWindow( wx.Frame ):
 		diag.ShowModal()
 		diag.Destroy()
 
+	def UpdateLineCol( self, event ):
+		line = self.control.GetCurrentLine() + 1
+		col = self.control.GetColumn( self.control.GetCurrentPos() )
+		stat = "Line %s, Column %s" % ( line, col )
+		self.StatusBar.SetStatusText( stat, 0 )
+
+	def OnCharEvent( self, event ):
+		kCode = event.GetKeyCode()
+		print(kCode)
+		if( keyCode['KNew'] == kCode ):
+			self.OnNew( self )
+		elif( keyCode['KOpen'] == kCode ):
+			self.OnOpen( self )
+		elif( keyCode['KSave'] == kCode ):
+			self.OnSave( self )
+		#elif( event.AltDown and keyCode['KSaveAs'] ):
+			#print( "that" )
+			#self.OnSaveAs( self )
+		elif ( keyCode['KClose'] == kCode ):
+			self.OnClose( self )
+		else:
+			event.Skip()
 
 app = wx.App()
 frame = MainWindow( None, "Advanced Text Editor" )
